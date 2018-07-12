@@ -57,7 +57,7 @@ DWORD WINAPI WriteToDatabase(LPVOID lpParam) {
 	// lpParam not used in this example
 	UNREFERENCED_PARAMETER(lpParam);
 
-	DWORD dwCount = 0;
+	DWORD dwCount = 0;  // I guess a ULONG can be substitute
 	DWORD dwWaitResult;
 
 	// Request ownership of mutex.
@@ -67,10 +67,10 @@ DWORD WINAPI WriteToDatabase(LPVOID lpParam) {
 			ghMutex,    // handle to mutex
 			INFINITE);  // no time-out interval
 
-		switch (dwWaitResult) {
-
+		switch (dwWaitResult)
+		{
 			// The thread got ownership of the mutex
-		case WAIT_OBJECT_0:
+			case WAIT_OBJECT_0:
 
 			// TODO: Write to the database
 			printf("Thread %d writing to database...\n", GetCurrentThreadId());
@@ -81,13 +81,12 @@ DWORD WINAPI WriteToDatabase(LPVOID lpParam) {
 				printf("CreateThread error: %d\n", GetLastError());
 				return(EXIT_FAILURE);
 			}
-
 			break;
 
 			// The thread got ownership of an abandoned mutex
 			// The database is in an indeterminate state
-		case WAIT_ABANDONED:
-			return FALSE;
+			case WAIT_ABANDONED:
+				return FALSE;
 		}
 	}
 	return TRUE;
